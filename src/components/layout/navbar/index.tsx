@@ -75,7 +75,7 @@ export const Navbar = () => {
           <ul className="flex flex-col lg:items-center font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white">
             <li>
               <Link
-                href="/"
+                href="#hero-section"
                 className="block py-2 px-3  text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
               >
                 Home
@@ -143,7 +143,7 @@ export const Navbar = () => {
             </li> */}
             <li>
               <Link
-                href="/"
+                href="#converter-section"
                 className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
               >
                 Currency Converter

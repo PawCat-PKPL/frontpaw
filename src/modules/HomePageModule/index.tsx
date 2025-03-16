@@ -2,18 +2,25 @@ import ConverterForm from "./sections/ConverterForm";
 
 export const HomePageModule = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-5 py-20 lg:px-28">
+    <div
+      id="hero-section"
+      className="flex flex-col items-center justify-center min-h-screen px-5 py-20 lg:px-28"
+    >
       <main className="py-10">
-        HALO
-        {/* Currency Converter */}
         <section>
-          <h2>Currency Converter</h2>
+          <p>HALO YUK REGISTER PAWCAT</p>
+          <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+            Eaque magni blanditiis velit quidem, eius corporis ipsum
+            ullam laboriosam hic? Aspernatur nisi culpa harum quidem
+            consequuntur quae. Animi hic cumque illo?
+          </p>
+        </section>
+
+        <section id="converter-section">
           <ConverterForm />
         </section>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        INI FOOTER
-      </footer>
     </div>
   );
 };
