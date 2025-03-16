@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { loginUser } from "@/hooks/auth";
+import { toast, Toaster } from "@/components/sonner";
 
 export const LoginPageModule = () => {
   const [formData, setFormData] = useState({
-    email: "",
+    username_or_email: "",
     password: "",
   });
 
@@ -12,9 +14,28 @@ export const LoginPageModule = () => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     console.log("Login attempt", formData);
+
+    const responseData = await loginUser(formData);
+
+    if (responseData?.error) {
+      if (responseData.error.includes("Too many login attempts")) {
+        toast.error(
+          "Too many login attempts. Please try again later."
+        );
+      } else {
+        toast.error(responseData.error);
+      }
+    } else {
+      toast.success("Login successful!");
+      setFormData({
+        username_or_email: "",
+        password: "",
+      });
+    }
   };
 
   return (
@@ -23,20 +44,23 @@ export const LoginPageModule = () => {
         <h1 className="text-2xl font-bold mb-6">
           Sign in to your account
         </h1>
+
+        <Toaster />
+
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
             <label
-              htmlFor="email"
+              htmlFor="username_or_email"
               className="block mb-2 text-sm font-medium"
             >
-              Email
+              Username or Email
             </label>
             <input
-              type="email"
-              id="email"
-              value={formData.email}
+              type="text"
+              id="username_or_email"
+              value={formData.username_or_email}
               onChange={handleChange}
-              placeholder="name@company.com"
+              placeholder="name@company.com or JohnDoe"
               className="w-full p-2.5 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500"
               required
             />
@@ -64,6 +88,15 @@ export const LoginPageModule = () => {
           >
             Sign in
           </button>
+          <p className="mt-4 text-sm text-center text-gray-400">
+            Don&apos;t have an account?{" "}
+            <a
+              href="/register"
+              className="text-blue-500 hover:underline"
+            >
+              Register here
+            </a>
+          </p>
         </form>
       </div>
     </section>

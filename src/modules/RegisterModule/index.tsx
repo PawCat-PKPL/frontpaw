@@ -1,9 +1,8 @@
 "use client";
-
 import { useState, FormEvent } from "react";
-import { RegisterSchema } from "@/hooks/auth";
-// import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
+import { registerUser } from "@/hooks/auth";
+import { toast, Toaster } from "@/components/sonner";
 
 export const RegisterPageModule = () => {
   const [formData, setFormData] = useState({
@@ -21,18 +20,20 @@ export const RegisterPageModule = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    const result = RegisterSchema.safeParse(formData);
+    const responseData = await registerUser(formData);
 
-    if (!result.success) {
-      const errorMessages = result.error.errors.map(
-        (err) => err.message
-      );
-      errorMessages.forEach((message) => alert(message));
-      return;
+    if (responseData?.error) {
+      toast.error(responseData.error);
+    } else {
+      toast.success("Registration successful!");
+      setFormData({
+        username: "",
+        email: "",
+        full_name: "",
+        password: "",
+        password2: "",
+      });
     }
-
-    // Continue with the registration process
-    console.log("Form data is valid", result.data);
   };
 
   return (
@@ -42,7 +43,10 @@ export const RegisterPageModule = () => {
           Create an account
         </h1>
 
+        <Toaster />
+
         <form className="space-y-6" onSubmit={handleSubmit}>
+          <Toaster />
           <div>
             <label
               htmlFor="email"
@@ -139,6 +143,16 @@ export const RegisterPageModule = () => {
           >
             Create an account
           </button>
+
+          <p className="text-sm font-light text-gray-400">
+            Already have an account?{" "}
+            <Link
+              href="/login"
+              className="font-medium hover:underline text-blue-500"
+            >
+              Login here
+            </Link>
+          </p>
         </form>
       </div>
     </section>
