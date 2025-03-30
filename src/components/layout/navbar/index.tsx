@@ -5,6 +5,7 @@ import React, { useState } from "react";
 
 export const Navbar = () => {
   // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMenu = () => {

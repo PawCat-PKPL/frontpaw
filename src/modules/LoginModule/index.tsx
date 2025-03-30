@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { loginUser } from "@/hooks/auth";
+import { useAuth } from "@/hooks/useAuth";
 import { toast, Toaster } from "@/components/sonner";
+import { useRouter } from "next/navigation";
 
 export const LoginPageModule = () => {
+  const { loginUser } = useAuth();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     username_or_email: "",
     password: "",
@@ -17,20 +21,19 @@ export const LoginPageModule = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("Login attempt", formData);
+    if (isLoading) return;
+    setIsLoading(true);
 
     const responseData = await loginUser(formData);
 
     if (responseData?.error) {
-      if (responseData.error.includes("Too many login attempts")) {
-        toast.error(
-          "Too many login attempts. Please try again later."
-        );
-      } else {
-        toast.error(responseData.error);
-      }
+      toast.error(responseData.error);
+      setIsLoading(false);
     } else {
       toast.success("Login successful!");
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
       setFormData({
         username_or_email: "",
         password: "",

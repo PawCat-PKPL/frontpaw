@@ -1,10 +1,15 @@
 "use client";
 import { useState, FormEvent } from "react";
 import Link from "next/link";
-import { registerUser } from "@/hooks/auth";
+import { useRouter } from "next/navigation";
+
+import { useAuth } from "@/hooks/useAuth";
 import { toast, Toaster } from "@/components/sonner";
 
 export const RegisterPageModule = () => {
+  const { registerUser } = useAuth();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -20,12 +25,19 @@ export const RegisterPageModule = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
+    if (isLoading) return;
+    setIsLoading(true);
+
     const responseData = await registerUser(formData);
 
     if (responseData?.error) {
       toast.error(responseData.error);
+      setIsLoading(false);
     } else {
       toast.success("Registration successful!");
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
       setFormData({
         username: "",
         email: "",
@@ -139,6 +151,7 @@ export const RegisterPageModule = () => {
 
           <button
             type="submit"
+            disabled={isLoading}
             className="w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
           >
             Create an account

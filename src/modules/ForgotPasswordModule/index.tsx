@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { RegisterSchema } from "@/hooks/auth";
+// import { RegisterSchema } from "@/hooks/useAuth";
 
 export const ForgotPasswordPageModule = () => {
   const [formData, setFormData] = useState({
@@ -18,18 +18,15 @@ export const ForgotPasswordPageModule = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    const result = RegisterSchema.safeParse(formData);
+    // const result = RegisterSchema.safeParse(formData);
 
-    if (!result.success) {
-      const errorMessages = result.error.errors.map(
-        (err) => err.message
-      );
-      errorMessages.forEach((message) => alert(message));
-      return;
-    }
-
-    // Continue with the registration process
-    console.log("Form data is valid", result.data);
+    // if (!result.success) {
+    //   const errorMessages = result.error.errors.map(
+    //     (err) => err.message
+    //   );
+    //   errorMessages.forEach((message) => alert(message));
+    //   return;
+    // }
   };
 
   return (
