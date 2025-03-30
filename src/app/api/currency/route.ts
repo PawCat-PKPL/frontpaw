@@ -21,7 +21,7 @@ export async function GET(req: Request) {
   if (cache.has(cacheKey)) {
     const cachedData = cache.get(cacheKey);
     if (cachedData) {
-      console.log("Menggunakan data dari cache");
+      // console.log("Menggunakan data dari cache");
       return NextResponse.json({ conversion_rate: cachedData.rate });
     }
   }
@@ -49,7 +49,7 @@ export async function GET(req: Request) {
     });
     setTimeout(() => {
       cache.delete(cacheKey);
-      console.log(`Cache expired untuk ${cacheKey}`);
+      // console.log(`Cache expired untuk ${cacheKey}`);
     }, cacheTTL);
 
     return NextResponse.json({
