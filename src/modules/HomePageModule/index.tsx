@@ -1,72 +1,62 @@
-"use client";
-import { useEffect, useState } from "react";
 import ConverterForm from "./sections/ConverterForm";
+import Home from "./sections/Home";
+import Image from "next/image";
 
 export const HomePageModule = () => {
-  const [username, setUsername] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const checkLoggedIn = async () => {
-      try {
-        const res = await fetch("/api/get-token");
-        const { accessToken } = await res.json();
-
-        if (accessToken) {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/auth/user-info`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-                "Content-Type": "application/json",
-              },
-              credentials: "include", // Supaya cookie ikut dikirim
-            }
-          );
-
-          if (response.ok) {
-            const responseData = await response.json();
-            setUsername(responseData.data.username);
-            setIsLoggedIn(true);
-          } else {
-            setIsLoggedIn(false);
-          }
-        }
-      } catch {
-        console.error("Error checking login status");
-      }
-    };
-
-    checkLoggedIn();
-  }, []);
-
   return (
-    <div
+    <main
       id="hero-section"
-      className="flex flex-col items-center justify-center min-h-screen px-5 py-20 lg:px-28"
+      className="flex flex-col max-lg:items-center justify-center min-h-screen w-full lg:px-28"
     >
-      <main className="py-10">
-        <section>
-          {isLoggedIn ? (
-            <p>Hi, {username}</p>
-          ) : (
-            <p className="hidden md:block">Hi, Guest</p>
-          )}
+      <section className="relative flex items-center h-screen">
+        <div className="absolute top-0 -left-5 lg:-left-28 max-lg:w-full w-3/4 h-screen -z-50">
+          <Image
+            src="/Divide.svg"
+            alt="divider"
+            layout="fill"
+            objectFit="cover"
+          />
+        </div>
 
-          <p>HALO YUK REGISTER PAWCAT</p>
-          <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-            Eaque magni blanditiis velit quidem, eius corporis ipsum
-            ullam laboriosam hic? Aspernatur nisi culpa harum quidem
-            consequuntur quae. Animi hic cumque illo?
-          </p>
-        </section>
+        <Home />
 
-        <section id="converter-section">
-          <ConverterForm />
-        </section>
-      </main>
-    </div>
+        <div className="max-lg:hidden absolute -right-28 -translate-y-10 -z-30">
+          <Image
+            src="/Hero.png"
+            alt="hero"
+            width={800}
+            height={1000}
+            objectFit="contain"
+          />
+        </div>
+      </section>
+
+      <section
+        id="converter-section"
+        className="relative flex items-center"
+      >
+        <div className="max-lg:hidden absolute -right-28 w-3/4 h-screen -z-50 ">
+          <Image
+            src="/Divide.svg"
+            alt="divider"
+            layout="fill"
+            objectFit="cover"
+            className="transform scale-x-[-1]"
+          />
+        </div>
+
+        <div className="max-lg:hidden absolute -right-28 -z-30">
+          <Image
+            src="/BolaDunia.png"
+            alt="boladunia"
+            width={800}
+            height={400}
+            objectFit="contain"
+          />
+        </div>
+
+        <ConverterForm />
+      </section>
+    </main>
   );
 };
