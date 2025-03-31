@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { usePathname, useRouter } from "next/navigation";
 
 export const Navbar = () => {
   const { user, user_id, username, avatar_id, is_admin, logoutUser } =
@@ -18,6 +19,18 @@ export const Navbar = () => {
       document.body.style.overflow = "";
     }
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const pathname = usePathname();
+  const router = useRouter();
+  const scrollToSection = (id: string) => {
+    if (pathname === "/") {
+      document
+        .getElementById(id)
+        ?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push(`/#${id}`);
+    }
   };
 
   console.log("avatar_id: ", avatar_id);
@@ -91,13 +104,21 @@ export const Navbar = () => {
         >
           <ul className="flex flex-col lg:items-center font-bold text-[#E85D04] p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white">
             <li>
-              <Link
-                href="#hero-section"
-                scroll={false}
-                className="block py-2 px-3 rounded-sm hover:bg-white md:hover:bg-transparent md:border-0 md:hover:text-[#F48C06] md:p-0"
+              <button
+                onClick={() => scrollToSection("hero-section")}
+                className="w-full block text-left py-2 px-3 rounded-sm hover:bg-white md:hover:bg-transparent md:border-0 md:hover:text-[#F48C06] md:p-0"
               >
                 Home
-              </Link>
+              </button>
+            </li>
+
+            <li>
+              <button
+                onClick={() => scrollToSection("converter-section")}
+                className="w-full block text-left py-2 px-3 rounded-lg hover:bg-white md:hover:bg-transparent md:border-0 md:hover:text-[#F48C06] md:p-0"
+              >
+                Currency Converter
+              </button>
             </li>
 
             {isAuthenticated && (
@@ -119,21 +140,7 @@ export const Navbar = () => {
                     Split Bill
                   </Link>
                 </li>
-              </>
-            )}
 
-            <li>
-              <Link
-                href="#converter-section"
-                scroll={false}
-                className="block py-2 px-3 rounded-lg hover:bg-white md:hover:bg-transparent md:border-0 md:hover:text-[#F48C06] md:p-0"
-              >
-                Currency Converter
-              </Link>
-            </li>
-
-            {isAuthenticated && (
-              <>
                 <li>
                   <Link
                     href="/"
