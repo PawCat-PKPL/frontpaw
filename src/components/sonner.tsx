@@ -24,11 +24,11 @@ const Toaster = ({ ...props }: ToasterProps) => {
         classNames: {
           toast:
             "flex items-center gap-10 p-10 rounded-[0.5rem] text-raleway font-bold text-black z-20",
-          description: "group-[.toast]:text-neutral-500",
+          description: "group-[.toast]:text-[#fafafa]",
           actionButton:
-            "group-[.toast]:bg-neutral-900 group-[.toast]:text-neutral-50",
+            "group-[.toast]:bg-[#707070] group-[.toast]:text-[#FAFAFA]",
           cancelButton:
-            "group-[.toast]:bg-neutral-100 group-[.toast]:text-neutral-500",
+            "group-[.toast]:bg-[#EFEFEF] group-[.toast]:text-[#D6D6D6]",
         },
       }}
       {...props}
@@ -44,10 +44,10 @@ const toast = {
   ) => {
     return sonnerToast.success(message, {
       ...data,
-      className: "border-tosca-normal bg-tosca-light-hover space-x-4",
+      className: "border-[#308F9D] bg-[#AE0EEF0] space-x-4",
       icon: (
-        <div className="bg-tosca-normal p-1.5 rounded-full">
-          <Check size={20} className="stroke-tosca-light-hover" />
+        <div className="bg-[#308F9D] p-1.5 rounded-full text-white">
+          <Check size={20} className="stroke-white" />
         </div>
       ),
     });
@@ -58,7 +58,7 @@ const toast = {
   ) => {
     return sonnerToast.error(message, {
       ...data,
-      className: "border-red-500 bg-red-50 space-x-4",
+      className: "border-red-500 bg-red-50 space-x-4 ",
       icon: (
         <div className="bg-red-500 p-1.5 rounded-full">
           <X size={20} className="stroke-red-50" />
@@ -100,12 +100,12 @@ const toast = {
   ) => {
     return sonnerToast.message(message, {
       ...data,
-      className: "border-[#2F4A6A] bg-tosca-light space-x-4",
+      className: "border-[#2F4A6A] bg-[#EAF4F5] space-x-4",
       icon: (
         <div className="bg-[#2F4A6A] p-1.5 rounded-full">
           <LoaderCircle
             size={20}
-            className="animate-spin stroke-tosca-light"
+            className="animate-spin stroke-[#EAF4F5]"
           />
         </div>
       ),

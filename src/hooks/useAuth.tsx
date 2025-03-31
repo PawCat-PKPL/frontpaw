@@ -13,7 +13,10 @@ import { sanitizeInput } from "./authUtils";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface User {
+  user_id: string;
   username: string;
+  avatar_id: number;
+  is_admin: boolean;
   role: string;
 }
 
@@ -25,7 +28,10 @@ interface AuthResponse {
 
 interface AuthContextType {
   user: User | null;
-  isAuthenticated: boolean;
+  user_id: string;
+  username: string;
+  avatar_id: number;
+  is_admin: boolean;
   isAdmin: boolean;
   registerUser: (
     data: Record<string, unknown>
@@ -44,7 +50,6 @@ export const AuthProvider = ({
   children: ReactNode;
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const registerUser = async (data: Record<string, unknown>) => {
@@ -130,7 +135,7 @@ export const AuthProvider = ({
           : responseData.message || "Login failed";
         return { error: apiErrors };
       }
-
+      setUser(responseData.data);
       return { success: "Login successful!" };
     } catch {
       return {
@@ -141,15 +146,15 @@ export const AuthProvider = ({
 
   const logoutUser = async () => {
     try {
-      await fetch(`${API_URL}/auth/logout`, {
+      const response = await fetch(`${API_URL}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
+      console.log("Logout response:", response);
     } catch {
       console.error("Error logging out");
     } finally {
       setUser(null);
-      setIsAuthenticated(false);
     }
   };
 
@@ -192,6 +197,7 @@ export const AuthProvider = ({
 
       const tokenData = await tokenResponse.json();
       let accessToken = tokenData?.accessToken;
+      console.log("Token data:", tokenData);
 
       if (!accessToken) {
         console.warn("No access token found, attempting refresh...");
@@ -220,12 +226,11 @@ export const AuthProvider = ({
       if (response.ok) {
         const responseData = await response.json();
         setUser(responseData.data);
-        setIsAuthenticated(true);
       }
     } catch {
-      console.error("Error fetching user info");
+      // console.error("Error fetching user info");
     }
-  }, [setUser, setIsAuthenticated, refreshToken]);
+  }, [setUser, refreshToken]);
 
   useEffect(() => {
     checkAuth().finally(() => setLoading(false));
@@ -235,7 +240,10 @@ export const AuthProvider = ({
     <AuthContext.Provider
       value={{
         user,
-        isAuthenticated,
+        user_id: user?.user_id ?? "",
+        username: user?.username ?? "",
+        avatar_id: user?.avatar_id ?? 0,
+        is_admin: user?.is_admin ?? false,
         isAdmin: user?.role === "admin",
         registerUser,
         loginUser,

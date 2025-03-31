@@ -49,15 +49,15 @@ const ConverterForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="bg-white shadow-lg rounded-2xl p-6 w-96">
-        <h2 className="text-xl font-semibold text-center mb-4">
+    <div className="flex items-center min-h-screen">
+      <div className="bg-white shadow-lg rounded-2xl p-6 w-96 lg:px-10 lg:py-14 lg:w-2/3">
+        <h2 className="text-xl font-semibold text-center mb-4 lg:text-2xl">
           Currency Converter
         </h2>
 
         <form onSubmit={handleFormSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium">
+            <label className="block text-sm font-bold lg:text-lg">
               Enter Amount
             </label>
             <input
@@ -69,9 +69,9 @@ const ConverterForm = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center justify-between gap-4 lg:pb-5">
             <div className="w-1/2">
-              <label className="block text-sm font-medium">
+              <label className="block text-sm font-bold lg:text-lg">
                 From
               </label>
               <CurrencySelect
@@ -91,7 +91,9 @@ const ConverterForm = () => {
             </button>
 
             <div className="w-1/2">
-              <label className="block text-sm font-medium">To</label>
+              <label className="block text-sm font-bold lg:text-lg">
+                To
+              </label>
               <CurrencySelect
                 selectedCurrency={toCurrency}
                 handleCurrency={(e) => setToCurrency(e.target.value)}
@@ -101,7 +103,7 @@ const ConverterForm = () => {
 
           <button
             type="submit"
-            className="w-full p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            className="w-full p-2 lg:p-3 bg-[#E85D04]/60 text-[#742f02] font-bold rounded-lg hover:bg-[#E85D04]/70 lg:text-lg"
             disabled={isLoading}
           >
             {isLoading ? "Loading..." : "Get Exchange Rate"}
@@ -109,7 +111,7 @@ const ConverterForm = () => {
         </form>
 
         {showResult && (
-          <div className="mt-4 p-3 bg-gray-100 text-center rounded-lg">
+          <div className="mt-4 p-3 bg-gray-100 text-center rounded-lg lg:text-lg">
             {result}
           </div>
         )}
