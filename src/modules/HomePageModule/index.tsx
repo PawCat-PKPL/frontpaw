@@ -9,7 +9,7 @@ export const HomePageModule = () => {
       className="flex flex-col max-lg:items-center justify-center min-h-screen w-full lg:px-28"
     >
       <section className="relative flex items-center h-screen">
-        <div className="absolute top-0 -left-5 lg:-left-28 max-lg:w-full w-3/4 h-screen -z-50">
+        <div className="absolute top-0 -left-5 lg:-left-28 max-lg:w-1/2 w-3/4 h-screen -z-50">
           <Image
             src="/Divide.svg"
             alt="divider"
@@ -24,8 +24,8 @@ export const HomePageModule = () => {
           <Image
             src="/Hero.png"
             alt="hero"
-            width={800}
-            height={1000}
+            width={900}
+            height={1100}
             objectFit="contain"
           />
         </div>
@@ -49,8 +49,8 @@ export const HomePageModule = () => {
           <Image
             src="/BolaDunia.png"
             alt="boladunia"
-            width={800}
-            height={400}
+            width={1000}
+            height={600}
             objectFit="contain"
           />
         </div>
