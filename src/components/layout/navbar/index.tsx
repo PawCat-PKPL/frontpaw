@@ -27,7 +27,7 @@ export const Navbar = () => {
   console.log("user: ", user);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white shadow-lg shadow-black/25 rounded-b-xl">
+    <nav className="fixed top-0 left-0 right-0 bg-white shadow-lg shadow-black/25 rounded-b-xl z-50">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
           href="/"
