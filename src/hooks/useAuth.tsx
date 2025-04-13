@@ -18,6 +18,7 @@ interface User {
   avatar_id: number;
   is_admin: boolean;
   role: string;
+  saldo: number;
 }
 
 interface AuthResponse {
