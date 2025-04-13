@@ -6,8 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { usePathname, useRouter } from "next/navigation";
 
 export const Navbar = () => {
-  const { user, user_id, username, avatar_id, is_admin, logoutUser } =
-    useAuth();
+  const { user, logoutUser } = useAuth();
   const isAuthenticated = !!user;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -33,11 +32,11 @@ export const Navbar = () => {
     }
   };
 
-  console.log("avatar_id: ", avatar_id);
-  console.log("isAdmin: ", is_admin);
-  console.log("userid: ", user_id);
-  console.log("username: ", username);
-  console.log("user: ", user);
+  // console.log("avatar_id: ", avatar_id);
+  // console.log("isAdmin: ", is_admin);
+  // console.log("userid: ", user_id);
+  // console.log("username: ", username);
+  // console.log("user: ", user);
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white shadow-lg shadow-black/25 rounded-b-xl z-50">
