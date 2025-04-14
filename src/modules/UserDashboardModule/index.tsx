@@ -22,7 +22,8 @@ interface Transaction {
 }
 
 export const UserDashboardPageModule = () => {
-  const { user } = useAuth();
+  const { user, is_admin } = useAuth();
+  const isAuthenticated = !!user;
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -65,13 +66,12 @@ export const UserDashboardPageModule = () => {
   // Fetch transactions from API
   const fetchTransactions = async () => {
     try {
-      const token = localStorage.getItem("token");
       const response = await fetch(`${API_URL}/dashboard/transactions`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
+        },
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -90,15 +90,13 @@ export const UserDashboardPageModule = () => {
   // Fetch categories from API
   const fetchCategories = async () => {
     try {
-      const token = localStorage.getItem("token");
-      console.log("Using token:", token);
 
       const response = await fetch(`${API_URL}/dashboard/categories`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
+        },
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -140,8 +138,8 @@ export const UserDashboardPageModule = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
         },
+        credentials: "include",
         body: JSON.stringify({
           type: transactionForm.type,
           amount: parseFloat(transactionForm.amount),
@@ -179,22 +177,21 @@ export const UserDashboardPageModule = () => {
     
     try {
 
-      const tokenResponse = await fetch("/api/get-token");
-      if (!tokenResponse.ok) throw new Error("Failed to fetch token");
+      // const tokenResponse = await fetch("/api/get-token");
+      // if (!tokenResponse.ok) throw new Error("Failed to fetch token");
       
-      const tokenData = await tokenResponse.json();
-      const accessToken = tokenData?.accessToken;
+      // const tokenData = await tokenResponse.json();
+      // const accessToken = tokenData?.accessToken;
       
-      if (!accessToken) {
-        toast.error("Authentication error");
-        return;
-      }
+      // if (!accessToken) {
+      //   toast.error("Authentication error");
+      //   return;
+      // }
 			
       const response = await fetch(`${API_URL}/dashboard/categories/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`
         },
         credentials: "include",
         body: JSON.stringify({
@@ -227,13 +224,12 @@ export const UserDashboardPageModule = () => {
     if (!confirm("Are you sure you want to delete this transaction?")) return;
     
     try {
-      const token = localStorage.getItem("token");
       const response = await fetch(`${API_URL}/dashboard/transactions/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
+        },
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -255,13 +251,12 @@ export const UserDashboardPageModule = () => {
     if (!confirm("Are you sure you want to delete this category? All associated transactions will be affected.")) return;
     
     try {
-      const token = localStorage.getItem("token");
       const response = await fetch(`${API_URL}/dashboard/categories/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
+        },
+        credentials: "include",
       });
 
       const data = await response.json();
