@@ -242,24 +242,26 @@ export const Navbar = () => {
             </button>
             {isDropdownOpen && (
               <div className="absolute right-4 mt-2 font-normal bg-gray-100 divide-y divide-white rounded-lg shadow-sm w-44 p-2">
-                <ul className="py-2 text-sm font-semibold text-[#E85D04]">
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:bg-white hover:rounded-xl"
-                    >
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:bg-white hover:rounded-xl"
-                    >
-                      Friends
-                    </Link>
-                  </li>
-                </ul>
+                {!is_admin && (
+                  <ul className="py-2 text-sm font-semibold text-[#E85D04]">
+                    <li>
+                      <Link
+                        href="/"
+                        className="block px-4 py-2 hover:bg-white hover:rounded-xl"
+                      >
+                        Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/"
+                        className="block px-4 py-2 hover:bg-white hover:rounded-xl"
+                      >
+                        Friends
+                      </Link>
+                    </li>
+                  </ul>
+                )}
                 <div className="py-1">
                   <button
                     onClick={logoutUser}

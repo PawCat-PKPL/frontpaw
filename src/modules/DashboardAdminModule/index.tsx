@@ -4,8 +4,15 @@ import React, { useRef } from "react";
 import InactiveUserListSection from "./sections/InactiveUserList";
 import ActiveUserListSection from "./sections/ActiveUserList";
 import SendNotificationSection from "./sections/SendNotificationSection";
+import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 export const DashboardAdminPageModule = () => {
+  const { user, is_admin } = useAuth();
+  const isAuthenticated = !!user;
+
+  const router = useRouter();
+
   const notifRef = useRef<HTMLDivElement>(null);
   const inactiveRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef<HTMLDivElement>(null);
@@ -21,6 +28,10 @@ export const DashboardAdminPageModule = () => {
   const scrollToActive = () => {
     activeRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  if (!isAuthenticated || !is_admin) {
+    router.push("/login");
+  }
 
   return (
     <div className="w-full">
