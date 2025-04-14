@@ -418,68 +418,38 @@ export const UserDashboardPageModule = () => {
         )}
         
         {/* Categories tab */}
-        {activeTab === "categories" && (
-          <div className="bg-white rounded-xl shadow-md p-6">
-            {categories.length === 0 ? (
-              <div className="text-center py-8">
-                <p className="text-gray-500 mb-4">You haven't added any categories yet</p>
-                <button
-                  onClick={() => setShowCategoryForm(true)}
-                  className="bg-[#FF7A00] hover:bg-[#F48C06] text-white font-bold rounded-lg px-4 py-2 focus:ring-4 focus:ring-blue-800"
-                >
-                  Add Your First Category
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <h3 className="text-xl font-bold mb-4 text-green-600">Income Categories</h3>
-                  {categories.filter(cat => cat.type === "income").length === 0 ? (
-                    <p className="text-gray-500">No income categories yet</p>
-                  ) : (
-                    <ul className="space-y-2">
-                      {categories
-                        .filter(cat => cat.type === "income")
-                        .map(category => (
-                          <li key={category.id} className="flex justify-between items-center p-3 bg-green-50 rounded">
-                            <span>{category.name}</span>
-                            <button
-                              onClick={() => handleDeleteCategory(category.id)}
-                              className="text-red-600 hover:text-red-800"
-                            >
-                              Delete
-                            </button>
-                          </li>
-                        ))}
-                    </ul>
-                  )}
+          {activeTab === "categories" && (
+            <div className="bg-white rounded-xl shadow-md p-6">
+              {categories.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-gray-500 mb-4">You haven't added any categories yet</p>
+                  <button
+                    onClick={() => setShowCategoryForm(true)}
+                    className="bg-[#FF7A00] hover:bg-[#F48C06] text-white font-bold rounded-lg px-4 py-2 focus:ring-4 focus:ring-blue-800"
+                  >
+                    Add Your First Category
+                  </button>
                 </div>
+              ) : (
                 <div>
-                  <h3 className="text-xl font-bold mb-4 text-red-600">Expense Categories</h3>
-                  {categories.filter(cat => cat.type === "expense").length === 0 ? (
-                    <p className="text-gray-500">No expense categories yet</p>
-                  ) : (
-                    <ul className="space-y-2">
-                      {categories
-                        .filter(cat => cat.type === "expense")
-                        .map(category => (
-                          <li key={category.id} className="flex justify-between items-center p-3 bg-red-50 rounded">
-                            <span>{category.name}</span>
-                            <button
-                              onClick={() => handleDeleteCategory(category.id)}
-                              className="text-red-600 hover:text-red-800"
-                            >
-                              Delete
-                            </button>
-                          </li>
-                        ))}
-                    </ul>
-                  )}
+                  <h3 className="text-xl font-bold mb-4 text-gray-700">All Categories</h3>
+                  <ul className="space-y-2">
+                    {categories.map(category => (
+                      <li key={category.id} className="flex justify-between items-center p-3 bg-gray-50 rounded">
+                        <span>{category.name}</span>
+                        <button
+                          onClick={() => handleDeleteCategory(category.id)}
+                          className="text-red-600 hover:text-red-800"
+                        >
+                          Delete
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
       </div>
       
       {/* Transaction form modal */}
