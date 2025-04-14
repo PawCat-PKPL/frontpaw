@@ -64,6 +64,7 @@ export const UserDashboardPageModule = () => {
       try {
         await fetchCategories();
         await fetchTransactions();
+        await fetchUserSaldo();
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
@@ -75,10 +76,35 @@ export const UserDashboardPageModule = () => {
     fetchData();
   }, [user, router]);
 
+  // Tambahkan fungsi baru untuk mengambil saldo
+  const fetchUserSaldo = async () => {
+    try {
+      const response = await fetch(`${API_URL}/dashboard/statistics/summary`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      const data = await response.json();
+      
+      if (response.ok && data.data && data.data.saldo !== undefined) {
+        // Perbarui state lokal untuk saldo
+        setUserSaldo(data.data.saldo);
+      }
+    } catch (error) {
+      console.error("Error fetching user saldo:", error);
+    }
+  };
+
+  // Tambahkan state baru
+  const [userSaldo, setUserSaldo] = useState(0);
+
   // Fetch transactions from API
   const fetchTransactions = async () => {
     try {
-      const response = await fetch(`${API_URL}/dashboard/transactions`, {
+      const response = await fetch(`${API_URL}/dashboard/transactions/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -293,7 +319,7 @@ export const UserDashboardPageModule = () => {
       day: 'numeric'
     });
   };
-
+  
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -316,7 +342,7 @@ export const UserDashboardPageModule = () => {
           <div className="flex items-center space-x-4">
             <div className="bg-white p-4 rounded-lg shadow-md">
               <p className="text-sm text-gray-500">Current Balance</p>
-              <p className="text-2xl font-bold text-[#FAA307]">{formatCurrency(user?.saldo || 0)}</p>
+              <p className="text-2xl font-bold text-[#FAA307]">{formatCurrency(userSaldo)}</p>
             </div>
             {activeTab === "transactions" && (
               <button

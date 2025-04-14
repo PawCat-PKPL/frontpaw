@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Line } from "react-chartjs-2";
 import { useMonthlyTrends } from "@/modules/StatisticModule/hooks";
 import {
@@ -10,6 +10,7 @@ import {
   LinearScale,
   Tooltip,
   Legend,
+  ChartOptions,
 } from "chart.js";
 
 ChartJS.register(
@@ -22,8 +23,10 @@ ChartJS.register(
 );
 
 const MonthlyTrendsChart = () => {
-  const data = useMonthlyTrends();
-  if (!data.length) return <p>Loading...</p>;
+  const [year, setYear] = useState(new Date().getFullYear());
+  const data = useMonthlyTrends(year);
+  
+  if (!data || !data.length) return <p>Loading monthly trends data...</p>;
 
   const chartData = {
     labels: data.map(d => d.month),
@@ -36,8 +39,8 @@ const MonthlyTrendsChart = () => {
         fill: true,
       },
       {
-        label: "Expense",
-        data: data.map(d => d.expense),
+        label: "Expenses",
+        data: data.map(d => d.expenses),
         borderColor: "#f87171",
         backgroundColor: "rgba(248, 113, 113, 0.2)",
         fill: true,
@@ -45,7 +48,60 @@ const MonthlyTrendsChart = () => {
     ],
   };
 
-  return <Line data={chartData} />;
+  const options: ChartOptions<'line'> = {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function(value) {
+            return '$' + value.toLocaleString();
+          }
+        }
+      }
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            let label = context.dataset.label || '';
+            if (label) {
+              label += ': ';
+            }
+            if (context.parsed.y !== null) {
+              label += '$' + context.parsed.y.toLocaleString();
+            }
+            return label;
+          }
+        }
+      }
+    }
+  };
+
+  const currentYear = new Date().getFullYear();
+  const yearOptions = [];
+  for (let y = currentYear; y >= currentYear - 5; y--) {
+    yearOptions.push(y);
+  }
+
+  return (
+    <div>
+      <div className="flex justify-end">
+        <select
+          className="border rounded p-1 text-sm"
+          value={year}
+          onChange={(e) => setYear(parseInt(e.target.value))}
+        >
+          {yearOptions.map(y => (
+            <option key={y} value={y}>{y}</option>
+          ))}
+        </select>
+      </div>
+      <div className="h-64">
+        <Line data={chartData} options={options} />
+      </div>
+    </div>
+  );
 };
 
 export default MonthlyTrendsChart;

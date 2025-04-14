@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useAuth } from "@/hooks/useAuth"; 
+import { useAuth } from "@/hooks/useAuth";
 import CategoryPieChart from "./sections/CategoryPieChart";
 import SummaryCards from "./sections/SummaryCards";
 import MonthlyTrendsChart from "./sections/MonthlyTrendsChart";
 import { useRouter } from "next/navigation";
+import { useSummaryStats } from "./hooks";
 
 const StatisticsPageModule = () => {
   const { user, is_admin } = useAuth();
@@ -13,14 +14,20 @@ const StatisticsPageModule = () => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const router = useRouter();
 
+  const data = useSummaryStats();
+
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && data) {
       setDataLoaded(true);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, data]);
 
   if (!isAuthenticated) {
     return <p>Please log in to view your statistics.</p>;
+  }
+
+  if (!dataLoaded) {
+    return <p>Loading statistics...</p>;
   }
 
   return (
