@@ -136,6 +136,7 @@ export const AuthProvider = ({
         return { error: apiErrors };
       }
       setUser(responseData.data);
+
       return { success: "Login successful!" };
     } catch {
       return {
@@ -146,13 +147,13 @@ export const AuthProvider = ({
 
   const logoutUser = async () => {
     try {
-      const response = await fetch(`${API_URL}/auth/logout`, {
+      await fetch(`${API_URL}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
-      console.log("Logout response:", response);
+      // console.log("Logout response:", response);
     } catch {
-      console.error("Error logging out");
+      // console.error("Error logging out");
     } finally {
       setUser(null);
     }
@@ -192,12 +193,14 @@ export const AuthProvider = ({
 
   const checkAuth = useCallback(async () => {
     try {
-      const tokenResponse = await fetch("/api/get-token");
+      const tokenResponse = await fetch("/api/get-token", {
+        credentials: "include",
+      });
       if (!tokenResponse.ok) throw new Error("Failed to fetch token");
 
       const tokenData = await tokenResponse.json();
       let accessToken = tokenData?.accessToken;
-      console.log("Token data:", tokenData);
+      // console.log("Token data:", tokenData);
 
       if (!accessToken) {
         console.warn("No access token found, attempting refresh...");
