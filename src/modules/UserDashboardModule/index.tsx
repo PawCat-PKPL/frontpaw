@@ -5,7 +5,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast, Toaster } from "@/components/sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { access } from "fs";
+import CategoryPieChart from "@/modules/StatisticModule/sections/CategoryPieChart";
+import SummaryCards from "@/modules/StatisticModule/sections/SummaryCards";
+import MonthlyTrendsChart from "@/modules/StatisticModule/sections/MonthlyTrendsChart";
 
 interface Category {
   id: number;
@@ -101,7 +103,7 @@ export const UserDashboardPageModule = () => {
   const fetchCategories = async () => {
     try {
 
-      const response = await fetch(`${API_URL}/dashboard/categories`, {
+      const response = await fetch(`${API_URL}/dashboard/categories/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -144,7 +146,7 @@ export const UserDashboardPageModule = () => {
     
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/dashboard/transactions`, {
+      const response = await fetch(`${API_URL}/dashboard/transactions/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -465,6 +467,28 @@ export const UserDashboardPageModule = () => {
           {activeTab === "statistic" && (
             <div className="bg-white rounded-xl shadow-md p-6">
               <h3 className="text-xl font-bold mb-4 text-gray-700">Statistics</h3>
+              
+              {/* Summary Cards */}
+              <div className="mb-8">
+                <SummaryCards />
+              </div>
+              
+              {/* Charts */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div className="bg-white p-4 rounded-xl shadow">
+                  <h4 className="text-lg font-semibold mb-4">Category Breakdown</h4>
+                  <div className="h-64">
+                    <CategoryPieChart />
+                  </div>
+                </div>
+                
+                <div className="bg-white p-4 rounded-xl shadow">
+                  <h4 className="text-lg font-semibold mb-4">Monthly Trends</h4>
+                  <div className="h-64">
+                    <MonthlyTrendsChart />
+                  </div>
+                </div>
+              </div>
             </div>
           )}
       </div>

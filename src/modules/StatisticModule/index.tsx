@@ -5,13 +5,13 @@ import { useAuth } from "@/hooks/useAuth";
 import CategoryPieChart from "./sections/CategoryPieChart";
 import SummaryCards from "./sections/SummaryCards";
 import MonthlyTrendsChart from "./sections/MonthlyTrendsChart";
-import  { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const StatisticsPageModule = () => {
   const { user, is_admin } = useAuth();
   const isAuthenticated = !!user;
   const [dataLoaded, setDataLoaded] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -20,12 +20,7 @@ const StatisticsPageModule = () => {
   }, [isAuthenticated]);
 
   if (!isAuthenticated) {
-    // router.push("/login")
-    return <p>Loading or please log in...</p>;
-  }
-
-  if (!dataLoaded) {
-    return <p>Loading statistics...</p>;
+    return <p>Please log in to view your statistics.</p>;
   }
 
   return (
