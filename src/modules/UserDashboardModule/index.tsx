@@ -25,6 +25,8 @@ export const UserDashboardPageModule = () => {
   const { user, is_admin } = useAuth();
   const isAuthenticated = !!user;
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  console.log(isAuthenticated, user, is_admin);
   
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -38,6 +40,7 @@ export const UserDashboardPageModule = () => {
     amount: "",
     description: "",
     category_id: "",
+    category: "",
     date: new Date().toISOString().split('T')[0]
   });
   
@@ -141,10 +144,12 @@ export const UserDashboardPageModule = () => {
         },
         credentials: "include",
         body: JSON.stringify({
-          type: transactionForm.type,
-          amount: parseFloat(transactionForm.amount),
-          description: transactionForm.description,
+          user:user?.user_id,
+          category:transactionForm.category,
           category_id: parseInt(transactionForm.category_id),
+          amount: parseFloat(transactionForm.amount),
+          type: transactionForm.type,
+          description: transactionForm.description,
           date: transactionForm.date
         })
       });
@@ -159,6 +164,7 @@ export const UserDashboardPageModule = () => {
           amount: "",
           description: "",
           category_id: "",
+          category: "",
           date: new Date().toISOString().split('T')[0]
         });
         fetchTransactions();
@@ -176,17 +182,6 @@ export const UserDashboardPageModule = () => {
     e.preventDefault();
     
     try {
-
-      // const tokenResponse = await fetch("/api/get-token");
-      // if (!tokenResponse.ok) throw new Error("Failed to fetch token");
-      
-      // const tokenData = await tokenResponse.json();
-      // const accessToken = tokenData?.accessToken;
-      
-      // if (!accessToken) {
-      //   toast.error("Authentication error");
-      //   return;
-      // }
 			
       const response = await fetch(`${API_URL}/dashboard/categories/`, {
         method: "POST",
@@ -196,7 +191,7 @@ export const UserDashboardPageModule = () => {
         credentials: "include",
         body: JSON.stringify({
           name: categoryForm.name,
-          type: categoryForm.type
+          user: user?.user_id
         })
       });
 
