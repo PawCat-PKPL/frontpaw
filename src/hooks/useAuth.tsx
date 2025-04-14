@@ -136,6 +136,7 @@ export const AuthProvider = ({
         return { error: apiErrors };
       }
       setUser(responseData.data);
+      await checkAuth();
       return { success: "Login successful!" };
     } catch {
       return {
