@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -126,7 +127,7 @@ export const Navbar = () => {
                   <>
                     <li>
                       <Link
-                        href="/"
+                        href="/user-dashboard"
                         className="block py-2 px-3 rounded-sm hover:bg-white lg:hover:bg-transparent lg:border-0 lg:hover:text-[#F48C06] lg:p-0"
                       >
                         Manage
