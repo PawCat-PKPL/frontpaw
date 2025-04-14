@@ -136,7 +136,7 @@ export const AuthProvider = ({
         return { error: apiErrors };
       }
       setUser(responseData.data);
-      await checkAuth();
+
       return { success: "Login successful!" };
     } catch {
       return {
@@ -193,7 +193,9 @@ export const AuthProvider = ({
 
   const checkAuth = useCallback(async () => {
     try {
-      const tokenResponse = await fetch("/api/get-token");
+      const tokenResponse = await fetch("/api/get-token", {
+        credentials: "include",
+      });
       if (!tokenResponse.ok) throw new Error("Failed to fetch token");
 
       const tokenData = await tokenResponse.json();
