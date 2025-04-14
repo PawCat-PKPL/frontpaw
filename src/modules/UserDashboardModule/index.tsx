@@ -33,7 +33,7 @@ export const UserDashboardPageModule = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"transactions" | "categories">("transactions");
+  const [activeTab, setActiveTab] = useState<"transactions" | "categories" | "statistic">("transactions");
   const [showTransactionForm, setShowTransactionForm] = useState(false);
   const [showCategoryForm, setShowCategoryForm] = useState(false);
   
@@ -359,6 +359,16 @@ export const UserDashboardPageModule = () => {
           >
             Categories
           </button>
+          <button
+            onClick={() => setActiveTab("statistic")}
+            className={`py-3 px-6 font-medium ${
+              activeTab === "statistic"
+                ? "border-b-2 border-[#FF7A00] text-[#FF7A00]"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            Statistic
+          </button>
         </div>
       </div>
       
@@ -448,6 +458,13 @@ export const UserDashboardPageModule = () => {
                   </ul>
                 </div>
               )}
+            </div>
+          )}
+
+        {/* Statistic tab */}
+          {activeTab === "statistic" && (
+            <div className="bg-white rounded-xl shadow-md p-6">
+              <h3 className="text-xl font-bold mb-4 text-gray-700">Statistics</h3>
             </div>
           )}
       </div>
