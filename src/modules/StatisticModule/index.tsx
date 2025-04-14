@@ -21,15 +21,15 @@ const StatisticsPageModule = () => {
 
   if (!isAuthenticated) {
     // router.push("/login")
-    return <p className="min-h-screen">Loading or please log in...</p>;
+    return <p>Loading or please log in...</p>;
   }
 
   if (!dataLoaded) {
-    return <p className="min-h-screen">Loading statistics...</p>;
+    return <p>Loading statistics...</p>;
   }
 
   return (
-    <div className="w-full flex p-6 space-y-10 min-h-screen">
+    <div className="p-6 space-y-10 min-h-screen">
       <h1 className="text-2xl font-bold">Financial Statistics</h1>
 
       <SummaryCards />
