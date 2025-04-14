@@ -226,7 +226,7 @@ export const UserDashboardPageModule = () => {
     if (!confirm("Are you sure you want to delete this transaction?")) return;
     
     try {
-      const response = await fetch(`${API_URL}/dashboard/transactions/${id}`, {
+      const response = await fetch(`${API_URL}/dashboard/transactions/${id}/`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -253,7 +253,7 @@ export const UserDashboardPageModule = () => {
     if (!confirm("Are you sure you want to delete this category? All associated transactions will be affected.")) return;
     
     try {
-      const response = await fetch(`${API_URL}/dashboard/categories/${id}`, {
+      const response = await fetch(`${API_URL}/dashboard/categories/${id}/`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -536,7 +536,6 @@ export const UserDashboardPageModule = () => {
                 >
                   <option value="">Select a category</option>
                   {categories
-                    .filter(cat => cat.type === transactionForm.type)
                     .map(category => (
                       <option key={category.id} value={category.id}>
                         {category.name}
