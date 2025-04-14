@@ -144,7 +144,7 @@ export const UserDashboardPageModule = () => {
     
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/dashboard/transactions`, {
+      const response = await fetch(`${API_URL}/dashboard/transactions/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
