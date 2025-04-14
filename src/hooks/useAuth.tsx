@@ -138,6 +138,9 @@ export const AuthProvider = ({
       }
       setUser(responseData.data);
 
+=========
+      // await checkAuth();
+>>>>>>>>> Temporary merge branch 2
       return { success: "Login successful!" };
     } catch {
       return {
