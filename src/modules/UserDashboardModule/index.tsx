@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast, Toaster } from "@/components/sonner";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { access } from "fs";
 
@@ -23,6 +24,7 @@ interface Transaction {
 
 export const UserDashboardPageModule = () => {
   const { user, is_admin } = useAuth();
+  const router = useRouter();
   const isAuthenticated = !!user;
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -52,6 +54,11 @@ export const UserDashboardPageModule = () => {
   // Fetch transactions and categories on component mount
   useEffect(() => {
     const fetchData = async () => {
+      if (user === null) {
+        router.push("/login");
+        return;
+      }
+
       try {
         await fetchCategories();
         await fetchTransactions();
@@ -64,7 +71,7 @@ export const UserDashboardPageModule = () => {
     };
 
     fetchData();
-  }, []);
+  }, [user, router]);
 
   // Fetch transactions from API
   const fetchTransactions = async () => {
