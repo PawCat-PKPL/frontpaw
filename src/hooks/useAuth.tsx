@@ -138,7 +138,6 @@ export const AuthProvider = ({
       }
       setUser(responseData.data);
 
-      // await checkAuth();
       return { success: "Login successful!" };
     } catch {
       return {
@@ -198,7 +197,6 @@ export const AuthProvider = ({
       const tokenResponse = await fetch("/api/get-token", {
         credentials: "include",
       });
-
       if (!tokenResponse.ok) throw new Error("Failed to fetch token");
 
       const tokenData = await tokenResponse.json();

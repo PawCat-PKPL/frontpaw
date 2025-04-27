@@ -5,7 +5,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast, Toaster } from "@/components/sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { access } from "fs";
+import CategoryPieChart from "@/modules/StatisticModule/sections/CategoryPieChart";
+import SummaryCards from "@/modules/StatisticModule/sections/SummaryCards";
+import MonthlyTrendsChart from "@/modules/StatisticModule/sections/MonthlyTrendsChart";
 
 interface Category {
   id: number;
@@ -62,6 +64,7 @@ export const UserDashboardPageModule = () => {
       try {
         await fetchCategories();
         await fetchTransactions();
+        await fetchUserSaldo();
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
@@ -73,10 +76,35 @@ export const UserDashboardPageModule = () => {
     fetchData();
   }, [user, router]);
 
+  // Tambahkan fungsi baru untuk mengambil saldo
+  const fetchUserSaldo = async () => {
+    try {
+      const response = await fetch(`${API_URL}/dashboard/statistics/summary`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      const data = await response.json();
+      
+      if (response.ok && data.data && data.data.saldo !== undefined) {
+        // Perbarui state lokal untuk saldo
+        setUserSaldo(data.data.saldo);
+      }
+    } catch (error) {
+      console.error("Error fetching user saldo:", error);
+    }
+  };
+
+  // Tambahkan state baru
+  const [userSaldo, setUserSaldo] = useState(0);
+
   // Fetch transactions from API
   const fetchTransactions = async () => {
     try {
-      const response = await fetch(`${API_URL}/dashboard/transactions`, {
+      const response = await fetch(`${API_URL}/dashboard/transactions/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +129,7 @@ export const UserDashboardPageModule = () => {
   const fetchCategories = async () => {
     try {
 
-      const response = await fetch(`${API_URL}/dashboard/categories`, {
+      const response = await fetch(`${API_URL}/dashboard/categories/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -144,7 +172,7 @@ export const UserDashboardPageModule = () => {
     
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/dashboard/transactions`, {
+      const response = await fetch(`${API_URL}/dashboard/transactions/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -291,7 +319,7 @@ export const UserDashboardPageModule = () => {
       day: 'numeric'
     });
   };
-
+  
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -314,7 +342,7 @@ export const UserDashboardPageModule = () => {
           <div className="flex items-center space-x-4">
             <div className="bg-white p-4 rounded-lg shadow-md">
               <p className="text-sm text-gray-500">Current Balance</p>
-              <p className="text-2xl font-bold text-[#FAA307]">{formatCurrency(user?.saldo || 0)}</p>
+              <p className="text-2xl font-bold text-[#FAA307]">{formatCurrency(userSaldo)}</p>
             </div>
             {activeTab === "transactions" && (
               <button
@@ -465,6 +493,28 @@ export const UserDashboardPageModule = () => {
           {activeTab === "statistic" && (
             <div className="bg-white rounded-xl shadow-md p-6">
               <h3 className="text-xl font-bold mb-4 text-gray-700">Statistics</h3>
+              
+              {/* Summary Cards */}
+              <div className="mb-8">
+                <SummaryCards />
+              </div>
+              
+              {/* Charts */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div className="bg-white p-4 rounded-xl shadow">
+                  <h4 className="text-lg font-semibold mb-4">Category Breakdown</h4>
+                  <div className="h-64">
+                    <CategoryPieChart />
+                  </div>
+                </div>
+                
+                <div className="bg-white p-4 rounded-xl shadow">
+                  <h4 className="text-lg font-semibold mb-4">Monthly Trends</h4>
+                  <div className="h-64">
+                    <MonthlyTrendsChart />
+                  </div>
+                </div>
+              </div>
             </div>
           )}
       </div>
